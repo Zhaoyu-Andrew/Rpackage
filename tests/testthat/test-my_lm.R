@@ -1,3 +1,5 @@
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
+data(mtcars)
+
+test_that("my_lm works", {
+  expect_is(my_lm(mpg ~ hp + wt, data = mtcars), summary(lm(mpg~hp +wt, data = mtcars)))
 })

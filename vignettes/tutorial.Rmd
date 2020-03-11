@@ -26,5 +26,22 @@ library(Rpackage)
 If you are unfamiliar with \texttt{my_gapminder}, we can view a description of the data using:
 
 ```{r}
-my_gapminder
+head(my_gapminder)
+```
+# Fitting a t-test
+Now, let's set up our model. 
+First, let's subset our samples to only include lifeExp covariate
+```{r}
+life_Exp <- my_gapminder[[4]]
+my_t.test(life_Exp, "two.sided", 1)
+
+my_t.test(life_Exp, "less", 1)
+
+my_t.test(life_Exp, "greater", 1)
+```
+```{r}
+gdp_Percap <- my_gapminder[[6]]
+continent <- my_gapminder[[2]]
+my_lm(life_Exp ~ gdp_Percap + continent, data = my_gapminder)
+summary(my_lm(life_Exp ~ gdp_Percap + continent, data = my_gapminder))
 ```
