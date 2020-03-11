@@ -14,7 +14,17 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+Install \texttt{Rpackage} using:
+```{r, eval = FALSE}
+devtools::install_github("Zhaoyu-Andrew/Rpackage")
+```
+To begin, we load our example data set as a \texttt{gapminder} object.
 
-```{r setup}
+```{r, message = FALSE}
 library(Rpackage)
+```
+If you are unfamiliar with \texttt{my_gapminder}, we can view a description of the data using:
+
+```{r}
+my_gapminder
 ```
