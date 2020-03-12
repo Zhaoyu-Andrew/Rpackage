@@ -10,19 +10,18 @@
 #' my_rf_cv(5)
 #'
 #' @export
+#' @import class magrittr randomForest tidyverse
 my_rf_cv <- function(k) {
-  # load dataset
-  dataset <- my_gapminder
   # get the total number of the dataset
-  n <- nrow(dataset)
+  n <- nrow(my_gapminder)
   inds <- sample(rep(1:k, length = n))
   # randomly assigns observations to folds 1,…,k
-  dataset[, "split"] <- inds
+  my_gapminder[, "split"] <- inds
   pred_mat2 <- matrix(NA, n, 1)
   for(i in 1:k) {
-    data_train <- dataset %>%
+    data_train <- my_gapminder %>%
       filter(split != i)
-    data_test <- dataset %>%
+    data_test <- my_gapminder %>%
       filter(split == i)
     # create the random forest model
     MODEL <- randomForest(lifeExp ~ gdpPercap, data = data_train, ntree = 30)
@@ -30,6 +29,6 @@ my_rf_cv <- function(k) {
     pred_mat2[inds == i, 1] = predict(MODEL, data_test[, -1])
   }
   # calculate the MSE across all k value
-  MSE <- colMeans((pred_mat2 - dataset$lifeExp)^2)
+  MSE <- colMeans((pred_mat2 - my_gapminder$lifeExp)^2)
   return(MSE)
 }

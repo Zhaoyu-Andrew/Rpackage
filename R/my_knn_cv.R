@@ -16,6 +16,7 @@
 #' my_knn_cv(iris, iris$Species, 1, 5)
 #'
 #' @export
+#' @import class magrittr dplyr
 my_knn_cv <- function(train, cl, k_nn, k_cv) {
   # select only the numeric column
   measure <- train %>%
