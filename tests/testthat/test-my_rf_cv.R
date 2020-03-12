@@ -1,3 +1,9 @@
+library(tidyverse)
+library(ggplot2)
+library(class)
+library(randomForest)
+library(dataset)
+
 data(iris)
 dataset <- iris
 

@@ -19,7 +19,7 @@
 my_knn_cv <- function(train, cl, k_nn, k_cv) {
   measure <- train[,-5]
   set.seed(302)
-  n <- nrow(data)
+  n <- nrow(train)
   inds <- sample(rep(1:k_cv, length = n))
   data_combine <- data.frame("x" = measure, "y" = cl, "split" = inds)
   error <- matrix(NA, k_cv, 1)
