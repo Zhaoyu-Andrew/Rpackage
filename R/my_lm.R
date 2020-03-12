@@ -6,7 +6,7 @@
 #' @keywords prediction
 #'
 #' @return A table which is similar to the summary() given by the lm() function.
-#'1
+#'
 #' @examples
 #' my_lm(mpg ~ hp + wt, data = mtcars)
 #'

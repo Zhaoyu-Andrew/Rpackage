@@ -13,7 +13,6 @@ my_lm(formula, data)
 }
 \value{
 A table which is similar to the summary() given by the lm() function.
-1
 }
 \description{
 This function fits a linear model in r and give a summary table.
