@@ -25,7 +25,7 @@ This function performs a k-nearest neighbors cross-validation on the given
   data.
 }
 \examples{
-my_knn_cv(iris, iris$Species, 1, 5)
+my_knn_cv(my_gapminder, my_gapminder$continent, 1, 5)
 
 }
 \keyword{prediction}

@@ -13,7 +13,7 @@
 #'   misclassification error.
 #'
 #' @examples
-#' my_knn_cv(iris, iris$Species, 1, 5)
+#' my_knn_cv(my_gapminder, my_gapminder$continent, 1, 5)
 #'
 #' @export
 #' @import class magrittr dplyr
