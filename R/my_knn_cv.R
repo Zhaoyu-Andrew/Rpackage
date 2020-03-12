@@ -20,7 +20,7 @@
 my_knn_cv <- function(train, cl, k_nn, k_cv) {
   # select only the numeric column
   measure <- train %>%
-    select(lifeExp, gdpPercap)
+    select(lifeExp, my_gapminder$gdpPercap)
   set.seed(302)
   # get the total number of the data
   n <- nrow(train)
