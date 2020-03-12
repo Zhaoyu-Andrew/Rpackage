@@ -10,7 +10,7 @@
 #' my_rf_cv(5)
 #'
 #' @export
-#' @import class magrittr randomForest stats
+#' @import class magrittr randomForest
 my_rf_cv <- function(k) {
   # get the total number of the dataset
   n <- nrow(my_gapminder)
