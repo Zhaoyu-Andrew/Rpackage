@@ -18,8 +18,9 @@
 #' @export
 #' @import class magrittr dplyr tidyverse
 my_knn_cv <- function(train, cl, k_nn, k_cv) {
-  measure <- train %>%
-    select(lifeExp, gdpPercap)
+  lifeExp <- train[[4]]
+  gdpPercap <- train[[6]]
+  measure <- data.frame(lifeExp, gdpPercap)
   set.seed(302)
   # get the total number of the data
   n <- nrow(train)
