@@ -15,7 +15,7 @@
 #' my_t.test(my_gapminder[[4]], "two.sided", 1)
 #'
 #' @export
-#' @import magrittr
+#' @import magrittr stats
 my_t.test <- function(x, alternative, mu) {
   if(alternative != "two.sided" & alternative != "less" &
      alternative != "greater") {
