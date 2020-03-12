@@ -18,7 +18,6 @@
 #' @export
 #' @import class magrittr dplyr tidyverse
 my_knn_cv <- function(train, cl, k_nn, k_cv) {
-  # select only the numeric column
   measure <- train %>%
     select(lifeExp, gdpPercap)
   set.seed(302)
