@@ -21,9 +21,9 @@ A list containing the test statistic, degree of freedom, a string
 This function performs a sample t-test based on the given input.
 }
 \examples{
-my_t.test(sample, "less", 1)
-my_t.test(sample, "greater", 1)
-my_t.test(sample, "two.sided", 1)
+my_t.test(my_gapminder[[4]], "less", 1)
+my_t.test(my_gapminder[[4]], "greater", 1)
+my_t.test(my_gapminder[[4]], "two.sided", 1)
 
 }
 \keyword{prediction}

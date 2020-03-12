@@ -10,9 +10,9 @@
 #'   represent the type of t-test, and the p-value of the t-test.
 #'
 #' @examples
-#' my_t.test(sample, "less", 1)
-#' my_t.test(sample, "greater", 1)
-#' my_t.test(sample, "two.sided", 1)
+#' my_t.test(my_gapminder[[4]], "less", 1)
+#' my_t.test(my_gapminder[[4]], "greater", 1)
+#' my_t.test(my_gapminder[[4]], "two.sided", 1)
 #'
 #' @export
 my_t.test <- function(x, alternative, mu) {
