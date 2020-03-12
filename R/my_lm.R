@@ -11,7 +11,7 @@
 #' my_lm(mpg ~ hp + wt, data = mtcars)
 #'
 #' @export
-#' @import magrittr
+#' @import magrittr stats dplyr::filter
 my_lm <- function(formula, data) {
   matrix_x <- model.matrix(formula, data)
   matrix_y <- model.response(model.frame(formula, data))
