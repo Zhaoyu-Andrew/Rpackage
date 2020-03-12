@@ -33,14 +33,19 @@ my_knn_cv <- function(train, cl, k_nn, k_cv) {
     data_train <- data_combine %>% filter(split != i)
     data_test <- data_combine %>% filter(split == i)
     # select only the numeric column
-    data_train_knn <- data_train %>%
-      select(x.lifeExp, x.gdpPercap)
-    data_test_knn <- data_test %>%
-      select(x.lifeExp, x.gdpPercap)
+    x_lifeExp_train <- data_train[[1]]
+    x_gdpPercap_train <- data_train[[2]]
+    data_train_knn <- data.frame(x_lifeExp_train, x_gdpPercap_train)
+
+    x_lifeExp_test <- data_test[[1]]
+    x_gdpPercap_test <- data_test[[2]]
+    data_test_knn <- data.frame(x_lifeExp_test, x_gdpPercap_test)
+
+
     # extract 5th column of train data set and use it for knn later
-    cl_train_column <- data_train[ ,3]
+    cl_train_column <- data_train[[3]]
     # extract 5th column of test data set to measure accuracy
-    cl_test_column <- data_test[ ,3]
+    cl_test_column <- data_test[[3]]
     # Train our models
     knn_predict <- knn(train = data_train_knn, cl = cl_train_column,
                        test = data_test_knn, k = k_nn)
