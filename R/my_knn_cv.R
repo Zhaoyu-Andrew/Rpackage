@@ -16,7 +16,7 @@
 #' my_knn_cv(my_gapminder, my_gapminder$continent, 1, 5)
 #'
 #' @export
-#' @import class magrittr dplyr
+#' @import class magrittr dplyr tidyverse
 my_knn_cv <- function(train, cl, k_nn, k_cv) {
   # select only the numeric column
   measure <- train %>%
