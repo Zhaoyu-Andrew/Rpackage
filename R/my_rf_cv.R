@@ -25,7 +25,7 @@ my_rf_cv <- function(k) {
     data_test <- dataset %>%
       filter(split == i)
     # create the random forest model
-    MODEL <- randomForest(lifeExp ~ gdpPercap, data = data_train, ntree = 100)
+    MODEL <- randomForest(lifeExp ~ gdpPercap, data = data_train, ntree = 30)
 
     pred_mat2[inds == i, 1] = predict(MODEL, data_test[, -1])
   }
