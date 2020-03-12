@@ -1,5 +1,3 @@
-
-
 test_that("my_t.test less properly", {
   expect_is(my_t.test(my_gapminder[[4]], "less", 1), "list")
 })
