@@ -1,5 +1,5 @@
-#' @import class magrittr randomForest
+#' @import class magrittr randomForest tidyverse
 
 test_that("my_rf works", {
-  expect_is(my_rf_cv(5), "numeric")
+  expect_is(my_rf_cv(5), "double")
 })
