@@ -1,12 +1,6 @@
-library(tidyverse)
-library(ggplot2)
-library(class)
-library(randomForest)
-library(dataset)
+#' @import class magrittr randomForest
 
-data(iris)
-dataset <- iris
-
+dataset <-  my_gapminder
 test_that("my_rf works", {
   expect_is(my_rf_cv(5), "numeric")
 })

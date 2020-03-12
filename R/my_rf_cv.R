@@ -20,11 +20,10 @@ my_rf_cv <- function(k) {
       filter(split != i)
     data_test <- dataset %>%
       filter(split == i)
-    MODEL <- randomForest(Sepal.Length ~ Sepal.Width + Petal.Length +
-                            Petal.Width, data = data_train, ntree = 100)
+    MODEL <- randomForest(lifeExp ~ gdpPercap, data = data_train, ntree = 100)
 
     pred_mat2[inds == i, 1] = predict(MODEL, data_test[, -1])
   }
-  MSE <- colMeans((pred_mat2 - dataset$Sepal.Length)^2)
+  MSE <- colMeans((pred_mat2 - dataset$lifeExp)^2)
   return(MSE)
 }
