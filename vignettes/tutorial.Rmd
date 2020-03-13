@@ -53,28 +53,38 @@ library(ggplot2)
 library(tidyverse)
 gdp_Percap <- my_gapminder[[6]]
 continent <- my_gapminder[[2]]
-my_lm <- my_lm(life_Exp ~ gdp_Percap + continent, data = my_gapminder)
+life_Exp <- my_gapminder[[4]]
+test <- my_lm(life_Exp ~ gdp_Percap + continent, data = my_gapminder)
+my_coef <- test[, 1]
+my_matrix <- model.matrix(life_Exp ~ gdp_Percap + continent, data = my_gapminder)
+y_hat <- my_matrix %*% as.matrix(my_coef)
 
+my_data <- data.frame("Actual" = my_gapminder$lifeExp,
+                      "Fitted" = y_hat,
+                      "Continent" = my_gapminder$continent)
 
-
-my_lm_data_frame <- as.data.frame.matrix(my_lm) 
-mod_fits <- fitted(my_lm_data_frame)
-my_df <- data.frame(actual = my_gapminder$lifeExp, fitted = mod_fits)
-ggplot(my_df, aes(x = fitted, y = actual)) +
-  geom_point() +
-  geom_abline(slope = 1, intercept = 0, col = "red", lty = 2) + 
-  theme_bw(base_size = 15) +
-  labs(x = "Fitted values", y = "Actual values", title = "Actual vs. Fitted") +
-  theme(plot.title = element_text(hjust = 0.5))
+ggplot(my_data, aes(x = Actual, y = Fitted, color = Continent)) +
+  geom_point() 
 
 ```
+
+# reject null hypothesis = 0
 ```{r}
 test <- my_knn_cv(my_gapminder, my_gapminder$continent, 1, 5)
 result <- matrix(NA, nrow = 2, ncol = 10)
-colnames(result) <- c("k_nn_1", "k_nn_2", "k_nn_3", "k_nn_4", "k_nn_5", "k_nn_6", "k_nn_7", 
-                      "k_nn_8", "k_nn_9", "k_nn_10")
-rownames(result) <- c("cv_err", "train_err")
+
+for(i in 1:10) {
+  test_i <- my_knn_cv(my_gapminder, my_gapminder$continent, i, 5)
+  result[1, i] <- test_i$cv_error
+  accuracy <- function(x){sum(diag(x)/(sum(rowSums(x)))) * 100}
+  tab_i <- table(test_i$class, my_gapminder$continent)
+  training_set_error_k_nn <- round((100 - accuracy(tab_i)) / 100, digit = 2)
+  result[2, i] <- training_set_error_k_nn
+}
 
 
+```
+```{r}
+library(ggplot2)
 
 ```

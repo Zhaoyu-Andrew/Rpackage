@@ -18,4 +18,4 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 Depends: R (>= 3.2)
-Imports: dplyr, magrittr, class, randomForest, stats
+Imports: dplyr, magrittr, class, randomForest, stats, ggplot2, tidyverse
