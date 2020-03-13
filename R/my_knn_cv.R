@@ -16,7 +16,7 @@
 #' my_knn_cv(my_gapminder, my_gapminder$continent, 1, 5)
 #'
 #' @export
-#' @import class magrittr stats dplyr::filter
+#' @import class magrittr stats dplyr
 my_knn_cv <- function(train, cl, k_nn, k_cv) {
   lifeExp <- train[[4]]
   gdpPercap <- train[[6]]
