@@ -30,8 +30,8 @@ my_knn_cv <- function(train, cl, k_nn, k_cv) {
   # create empty matrix for storing misclassification rate
   error <- matrix(NA, k_cv, 1)
   for(i in 1:k_cv) {
-    data_train <- data_combine %>% filter(split != i)
-    data_test <- data_combine %>% filter(split == i)
+    data_train <- data_combine %>% dplyr::filter(split != i)
+    data_test <- data_combine %>% dplyr::filter(split == i)
     # select only the numeric column
     x_lifeExp_train <- data_train[[1]]
     x_gdpPercap_train <- data_train[[2]]
