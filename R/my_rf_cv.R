@@ -10,9 +10,10 @@
 #' my_rf_cv(5)
 #'
 #' @export
-#' @import class magrittr randomForest stats dplyr
+#' @import class magrittr randomForest stats
 my_rf_cv <- function(k) {
   # get the total number of the dataset
+  my_gapminder <- my_gapminder
   n <- nrow(my_gapminder)
   inds <- sample(rep(1:k, length = n))
   # randomly assigns observations to folds 1,…,k
@@ -20,9 +21,9 @@ my_rf_cv <- function(k) {
   pred_mat2 <- matrix(NA, n, 1)
   for(i in 1:k) {
     data_train <- my_gapminder %>%
-      filter(split != i)
+      dplyr::filter(split != i)
     data_test <- my_gapminder %>%
-      filter(split == i)
+      dplyr::filter(split == i)
     # create the random forest model
     MODEL <- randomForest(lifeExp ~ gdpPercap, data = data_train, ntree = 30)
 
