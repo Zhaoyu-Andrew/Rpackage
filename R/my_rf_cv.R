@@ -28,11 +28,10 @@ my_rf_cv <- function(k) {
     # create the random forest model
     MODEL <- randomForest(lifeExp ~ gdpPercap, data = data_train, ntree = 30)
 
-  n <- nrow(dataset)
-  inds <- sample(rep(1:k, length = n))
-  # randomly assigns observations to folds 1,…,k
-  dataset[, "split"] <- inds
-  pred_mat2 <- matrix(NA, n, 1)
+    n <- nrow(my_gapminder)
+    inds <- sample(rep(1:k, length = n))
+    # randomly assigns observations to folds 1,…,k
+    my_gapminder[, "split"] <- inds
 
     pred_mat2[inds == i, 1] = predict(MODEL, data_test[, -1])
     continent_matrix <- as.matrix(data_test)
