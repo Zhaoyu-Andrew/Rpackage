@@ -68,3 +68,13 @@ ggplot(my_df, aes(x = fitted, y = actual)) +
   theme(plot.title = element_text(hjust = 0.5))
 
 ```
+```{r}
+test <- my_knn_cv(my_gapminder, my_gapminder$continent, 1, 5)
+result <- matrix(NA, nrow = 2, ncol = 10)
+colnames(result) <- c("k_nn_1", "k_nn_2", "k_nn_3", "k_nn_4", "k_nn_5", "k_nn_6", "k_nn_7", 
+                      "k_nn_8", "k_nn_9", "k_nn_10")
+rownames(result) <- c("cv_err", "train_err")
+
+
+
+```

@@ -30,8 +30,8 @@ my_knn_cv <- function(train, cl, k_nn, k_cv) {
   # create empty matrix for storing misclassification rate
   error <- matrix(NA, k_cv, 1)
   for(i in 1:k_cv) {
-    data_train <- data_combine %>% dplyr::filter(split != i)
-    data_test <- data_combine %>% dplyr::filter(split == i)
+    data_train <- data_combine %>% filter(split != i)
+    data_test <- data_combine %>% filter(split == i)
     # select only the numeric column
     x_lifeExp_train <- data_train[[1]]
     x_gdpPercap_train <- data_train[[2]]
@@ -63,14 +63,11 @@ my_knn_cv <- function(train, cl, k_nn, k_cv) {
   cv_error <- colMeans(error)
   # calculate the training set
   accuracy <- function(x){sum(diag(x)/(sum(rowSums(x)))) * 100}
-  tab_training_error <- table(test_1$class, data$Species)
+  tab_training_error <- table(knn_full, my_gapminder$continent)
   training_set_error <- round((100 - accuracy(tab_training_error)) / 100,
                               digit = 2)
   # create a list to the model as well as the average misclassification rate
   mylist <- list("class" = knn_full,
                  "cv_error" = cv_error,
                  "train_err" = training_set_error )
-
-  mylist
-  return(mylist)
 }
