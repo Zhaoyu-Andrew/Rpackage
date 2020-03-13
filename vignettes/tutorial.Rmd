@@ -7,13 +7,6 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
 Install \texttt{Rpackage} using:
 ```{r, eval = FALSE}
 devtools::install_github("Zhaoyu-Andrew/Rpackage")
@@ -33,15 +26,45 @@ Now, let's set up our model.
 First, let's subset our samples to only include lifeExp covariate
 ```{r}
 life_Exp <- my_gapminder[[4]]
-my_t.test(life_Exp, "two.sided", 1)
+my_t.test(life_Exp, "two.sided", 60)
 
-my_t.test(life_Exp, "less", 1)
+my_t.test(life_Exp, "less", 60)
 
-my_t.test(life_Exp, "greater", 1)
+my_t.test(life_Exp, "greater", 60)
 ```
+# Interpreting the result of the t-test
+
+Test 1: 
+  for the two-sided test, since the p-value 0.09322877 is greater than the cut-off value of α =0.05,
+  we conclude that we fail to reject the null hypothesis, therefore, there is not sufficient evidence to
+  support a conclusion that the population mean differs from a life expectancy of 60 years. 
+  
+Test 2:
+  for the left-sided test, since the p-value 0.04661438 is less than the cut-off value of α =0.05,
+  we reject the null hypothesis, therefore, there is enough evidence to support a conclusion that the 
+  population mean is less than a life expectancy of 60 years. 
+  
+Test 3:
+  for the right-sided test, since the p-value 0.9533856 is greater than the cut-off value of α =0.05,
+  we conclude that we fail to reject the null hypothesis, therefore, there is not sufficient evidence to
+  support a conclusion that the population mean is greater than a life expectancy of 60 years. 
 ```{r}
+library(ggplot2)
+library(tidyverse)
 gdp_Percap <- my_gapminder[[6]]
 continent <- my_gapminder[[2]]
-my_lm(life_Exp ~ gdp_Percap + continent, data = my_gapminder)
-summary(my_lm(life_Exp ~ gdp_Percap + continent, data = my_gapminder))
+my_lm <- my_lm(life_Exp ~ gdp_Percap + continent, data = my_gapminder)
+
+
+
+my_lm_data_frame <- as.data.frame.matrix(my_lm) 
+mod_fits <- fitted(my_lm_data_frame)
+my_df <- data.frame(actual = my_gapminder$lifeExp, fitted = mod_fits)
+ggplot(my_df, aes(x = fitted, y = actual)) +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0, col = "red", lty = 2) + 
+  theme_bw(base_size = 15) +
+  labs(x = "Fitted values", y = "Actual values", title = "Actual vs. Fitted") +
+  theme(plot.title = element_text(hjust = 0.5))
+
 ```

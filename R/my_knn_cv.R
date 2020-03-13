@@ -61,9 +61,16 @@ my_knn_cv <- function(train, cl, k_nn, k_cv) {
   knn_full <- knn(train = measure, cl = cl, test = measure, k = k_nn)
   # calculate the average misclassification rate
   cv_error <- colMeans(error)
+  # calculate the training set
+  accuracy <- function(x){sum(diag(x)/(sum(rowSums(x)))) * 100}
+  tab_training_error <- table(test_1$class, data$Species)
+  training_set_error <- round((100 - accuracy(tab_training_error)) / 100,
+                              digit = 2)
   # create a list to the model as well as the average misclassification rate
   mylist <- list("class" = knn_full,
-                 "cv_error" = cv_error)
+                 "cv_error" = cv_error,
+                 "train_err" = training_set_error )
+
   mylist
   return(mylist)
 }
