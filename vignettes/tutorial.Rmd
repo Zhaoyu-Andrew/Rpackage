@@ -80,9 +80,10 @@ my_data <- data.frame("Actual" = my_gapminder$lifeExp,
                       "Fitted" = y_hat,
                       "Continent" = my_gapminder$continent)
 # plot the dot graph 
-ggplot(my_data, aes(x = Actual, y = Fitted, color = Continent)) +
+plot_lm <- ggplot(my_data, aes(x = Actual, y = Fitted, color = Continent)) +
   geom_point() +
   geom_abline(slope = 1, intercept = 0, col = "red", lty = 2) 
+plot_lm
 ```
 ## Interpretation for the results of gdpPercap hypothesis test:
 
