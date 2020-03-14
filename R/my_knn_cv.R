@@ -3,7 +3,7 @@
 #' This function performs a k-nearest neighbors cross-validation on the given
 #'   data.
 #' @param train An input data frame.
-#' @param cl A true class value of your training data.
+#' @param cl A true class value of \code{train}.
 #' @param k_nn An integer representing the number of neighbors.
 #' @param k_cv An integer representing the number of folds.
 #' @keywords prediction
@@ -42,9 +42,9 @@ my_knn_cv <- function(train, cl, k_nn, k_cv) {
     x_lifeExp_test <- data_test[[1]]
     x_gdpPercap_test <- data_test[[2]]
     data_test_knn <- data.frame(x_lifeExp_test, x_gdpPercap_test)
-    # extract 5th column of train data set and use it for knn later
+    # extract 3th column of train data set and use it for knn later
     cl_train_column <- data_train[[3]]
-    # extract 5th column of test data set to measure accuracy
+    # extract 3th column of test data set to measure accuracy
     cl_test_column <- data_test[[3]]
     # Train our models
     knn_predict <- knn(train = data_train_knn, cl = cl_train_column,

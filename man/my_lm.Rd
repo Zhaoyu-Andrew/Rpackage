@@ -7,7 +7,7 @@
 my_lm(formula, data)
 }
 \arguments{
-\item{formula}{A formula class object.}
+\item{formula}{A formula class object specifying the response variable and explanatory variables by using columns of \code{data}.}
 
 \item{data}{Input data frame.}
 }

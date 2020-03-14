@@ -9,7 +9,7 @@ my_t.test(x, alternative, mu)
 \arguments{
 \item{x}{A numeric set of data.}
 
-\item{alternative}{A character string specifying the alternative.}
+\item{alternative}{A character string specifying the t-test type for \code{x}.}
 
 \item{mu}{A number indicating the null hypothesis value of the mean.}
 }

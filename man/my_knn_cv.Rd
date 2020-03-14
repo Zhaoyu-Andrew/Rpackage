@@ -9,7 +9,7 @@ my_knn_cv(train, cl, k_nn, k_cv)
 \arguments{
 \item{train}{An input data frame.}
 
-\item{cl}{A true class value of your training data.}
+\item{cl}{A true class value of \code{train}.}
 
 \item{k_nn}{An integer representing the number of neighbors.}
 
