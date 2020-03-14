@@ -7,72 +7,98 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-Install \texttt{Rpackage} using:
+# Introduction
+
+To install the package from Github, using the following code 
 ```{r, eval = FALSE}
 devtools::install_github("Zhaoyu-Andrew/Rpackage")
 ```
-To begin, we load our example data set as a \texttt{gapminder} object.
-
-```{r, message = FALSE}
+load the data for performing the function in the R package 
+```{r, eval = FALSE}
 library(Rpackage)
+library(ggplot2)
+library(tidyverse)
 ```
-If you are unfamiliar with \texttt{my_gapminder}, we can view a description of the data using:
-
-```{r}
+If you are unfamiliar with my_gapminder, we can view a description of the data using:
+```{r, eval = FALSE}
 head(my_gapminder)
 ```
 # Fitting a t-test
-Now, let's set up our model. 
-First, let's subset our samples to only include lifeExp covariate
-```{r}
+```{r, eval = FALSE}
+# First, let's subset our samples to only include lifeExp covariate
 life_Exp <- my_gapminder[[4]]
+
+# Demonstrate a test of the hypothesis in which the alternative hypothesis is that the mean life expectancy differs from 60 years 
 my_t.test(life_Exp, "two.sided", 60)
+# store p value for two-sided test
+two_sided_p <- my_t.test(life_Exp, "two.sided", 60)$p_value
 
+# Demonstrate a test of the hypothesis in which the alternative hypothesis is that the mean life expectancy is smaller than 60 years 
 my_t.test(life_Exp, "less", 60)
+# store p value for left-sided test
+left_sided_p <- my_t.test(life_Exp, "less", 60)$p_value
 
+# Demonstrate a test of the hypothesis in which the alternative hypothesis is that the mean life expectancy is greater than 60 years 
 my_t.test(life_Exp, "greater", 60)
+# store p value for right-sided test
+right_sided_p <- my_t.test(life_Exp, "greater", 60)$p_value
 ```
-# Interpreting the result of the t-test
+## Interpreting the result of the t-test
 
-Test 1: 
-  for the two-sided test, since the p-value 0.09322877 is greater than the cut-off value of α =0.05,
+### Test 1: 
+  for the two-sided test, since the p-value two_sided_p is greater than the cut-off value of α =0.05,
   we conclude that we fail to reject the null hypothesis, therefore, there is not sufficient evidence to
   support a conclusion that the population mean differs from a life expectancy of 60 years. 
   
-Test 2:
+### Test 2:
   for the left-sided test, since the p-value 0.04661438 is less than the cut-off value of α =0.05,
   we reject the null hypothesis, therefore, there is enough evidence to support a conclusion that the 
   population mean is less than a life expectancy of 60 years. 
   
-Test 3:
+### Test 3:
   for the right-sided test, since the p-value 0.9533856 is greater than the cut-off value of α =0.05,
   we conclude that we fail to reject the null hypothesis, therefore, there is not sufficient evidence to
   support a conclusion that the population mean is greater than a life expectancy of 60 years. 
-```{r}
-library(ggplot2)
-library(tidyverse)
+  
+# Fitting my_lm
+```{r, eval = FALSE}
+# extract the gdp_Percap column in my_gapminder 
 gdp_Percap <- my_gapminder[[6]]
+# extract the continent column in my_gapminder 
 continent <- my_gapminder[[2]]
+# extract the life expectancy in my_gapminder 
 life_Exp <- my_gapminder[[4]]
+# model with my_lm in the package 
 test <- my_lm(life_Exp ~ gdp_Percap + continent, data = my_gapminder)
+summary(test)
+# select the row representing the intercept of the model
 my_coef <- test[, 1]
-my_matrix <- model.matrix(life_Exp ~ gdp_Percap + continent, data = my_gapminder)
+my_matrix <- model.matrix(life_Exp ~ gdp_Percap + continent, 
+                          data = my_gapminder)
+# calculate the fitted value 
 y_hat <- my_matrix %*% as.matrix(my_coef)
-
+# create data frame for the dot plot
 my_data <- data.frame("Actual" = my_gapminder$lifeExp,
                       "Fitted" = y_hat,
                       "Continent" = my_gapminder$continent)
-
+# plot the dot graph 
 ggplot(my_data, aes(x = Actual, y = Fitted, color = Continent)) +
-  geom_point() 
-
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0, col = "red", lty = 2) 
 ```
+## Interpretation for the results of gdpPercap hypothesis test:
 
-# reject null hypothesis = 0
-```{r}
-test <- my_knn_cv(my_gapminder, my_gapminder$continent, 1, 5)
+  Based on the summary, we notice that the p-value for all factors appears to be 0.001889, which is smaller than the p-value cut-off value of 0.05, therefore, we reject the null hypothesis and conclude that slope of the linear regression line differs from 0. 
+
+## Interpret for the Actual vs. Fitted plot:
+  
+  On the dot plot, there is a red line which represents the line y = x. Dots which are closer to the red line inform that the predicted value is very closed or equal to the fitted value. By looking at the graph, we can notice that the blue and purple dots tend to concerntrate more beside the red line than other 3 colors.In other words, if we choose to demonstrate a regression using lifeExp as your response variable and gdpPercap and continent as explanatory variables, the prediction model works better for predicting life expectancy in Europe and Oceania than Americas, Asia, and Africa. We can also see from the graph that life expectancy in Africa tends to be lower than other continents, and Europe tends to have the highest life expectancy.
+
+# Fitting my_knn_cv test
+```{r, eval = FALSE}
+# create an empty matrix to record the training misclassification rate and the CV misclassification rate
 result <- matrix(NA, nrow = 2, ncol = 10)
-
+# iterate from k_nn=1,…,10 and store the training misclassification rate and the CV misclassification rate
 for(i in 1:10) {
   test_i <- my_knn_cv(my_gapminder, my_gapminder$continent, i, 5)
   result[1, i] <- test_i$cv_error
@@ -81,10 +107,77 @@ for(i in 1:10) {
   training_set_error_k_nn <- round((100 - accuracy(tab_i)) / 100, digit = 2)
   result[2, i] <- training_set_error_k_nn
 }
-
-
+# provide row and column name for the matrix 
+rownames(result) <- c("cv_err", "train_err")
+colnames(result) <- paste("knn_", seq(1:10), sep = "")
+a <- result[1,] - result[2,]
+# print the matrix
+result
 ```
-```{r}
-library(ggplot2)
+## How does cross validation work?
+  My_knn_cv has 4 parameters. The first one refers to the training data frame; The second one refers to the true value corresponding to the training data set. The third refer to the number of neightbors the method uses to identify the data. The last parameter refers to the k-fold number that refers to the number of groups that a given data sample is to be split into.
+  The generall process of k-fold cross validation shuffles the dataset randomly, and then it assigns random number to split the dataset into k-fold. Each time, the method takes all the data with the an identical assigned number out and uses them as testing data, and use the rest as the training data set. Then the method uses the training data to fit a model and evaluate the model with the training data set. The function records 
+the false rate for each iteration and finally summarize the rate by get the mean of all the evaluation scores.
+During the iteration process, the method guarantees that all the nunbers in the original dataset get the chance to be used as both training and testing data
 
+## Why is this method useful?
+  K-fold cross validation is understandable and because it randomly assgins numbers for each data set to split them into groups, it has low bias.
+  
+## Interpretation for which matrix to choose
+  Based on the printed matrix, we know that when knn = 10, we get the the smallest CV misclassification rates, so we would use the prediction model with knn = 10 when we just look solely on the CV error.On the other hand, if we can notice that we get the smallest training error when knn = 1, therefore, we will select prediction model with knn = 1 when we just look solely on the training error. A prediction with good fit should have low CV error which is slightly higher the training error, so by calculating the differences between the CV errors and training errors, we can find out that when knn = 10, we have the smallest differences, so I will pick model with knn = 10 in practice.
+  
+# Fitting my_rf_cv test
+```{r, eval = FALSE}
+# create a matrix with 90 rows and 1 column 
+cv_err_matrix <- matrix(NA, 90, 1)
+# apply function my_rf_cv with k = 2, 5, 10 and store results into the matrix 
+for(i in 1:30) {
+  cvv_err_2 <- my_rf_cv(2)
+  cv_err_matrix[i, 1] <- cvv_err_2
+  cvv_err_5 <- my_rf_cv(5)
+  cv_err_matrix[30 + i, 1] <- cvv_err_5
+  cvv_err_10 <- my_rf_cv(10)
+  cv_err_matrix[60 + i, 1] <- cvv_err_10
+}
+# create another matrix for identify the numnber of k for each data so that we can apply it for graphing the box plot later 
+cv_err_type_matrix <- matrix(NA, 90, 1)
+for(i in 1:30) {
+  cv_err_type_matrix[i, 1] <- "k = 2"
+  cv_err_type_matrix[30 + i, ] <- "k = 5"
+  cv_err_type_matrix[60 + i, ] <- "k = 10"
+}
+# calculate the mean and standard deviation for all the CV estimate in each 30 simulations each for each k values
+k_2_mean <- mean(cv_err_matrix[1:30, ])
+k_2_sd <- sd(cv_err_matrix[1:30, ])
+k_5_mean <- mean(cv_err_matrix[31:60, ])
+k_5_sd <- sd(cv_err_matrix[31:60, ])
+k_10_mean <- mean(cv_err_matrix[61:90, ])
+k_10_sd <- sd(cv_err_matrix[61:90, ])
+k_table_matrix <- matrix(c(k_2_mean, k_2_sd, k_5_mean, k_5_sd, k_10_mean, 
+                           k_10_sd), ncol = 2, byrow = TRUE)
+# provide row and column name for the matrix
+rownames(k_table_matrix) <- c("k = 2", "k = 5", "k = 10")
+colnames(k_table_matrix) <- c("mean", "sd")
+# convert the matrix to a table and display the table
+k_table <- as.table(k_table_matrix)
+k_table
+
+# create data frame for graphing the boxplots
+cv_err_data_frame <- data.frame(cv_err = cv_err_matrix[, 1],
+                                k_value = cv_err_type_matrix[, 1])
+# graph boxplot for the CV errors for all k values used 
+boxplot <- ggplot(data = cv_err_data_frame, 
+       aes(x = reorder(k_value, cv_err, FUN = median), y = cv_err)) +
+  geom_boxplot(fill = "lightblue") +
+  theme_bw(base_size = 20) +
+  labs(title = "lifeExp by k value", 
+       x = "", 
+       y = "") +
+  theme(plot.title =
+          element_text(hjust = 0.5)) +
+  ylim(c(70, 85))
+
+boxplot
 ```
+## summary from the table and the boxplot
+  From the table, we can notice that as the value of k increases, the average CV estimate also increases, at the meantime, the standard deviation decreases. From the boxplot, we can see that the median increases as the value of k increases, we can also notice that when k = 2, there are 3 outliers affecting the standard deviation, that's why the model with k = 2 has bigger spread for the errors and highest standard deviation for CV estimate among the 3 models. In general, the bigger value for k will split the data into more groups, and the function will perform more iterations for the data, therefore the bias tend to be reduced more.
