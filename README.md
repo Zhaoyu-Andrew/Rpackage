@@ -14,9 +14,11 @@ Rpackage contains 4 functions for data prediction
 
 To download the **Rpackage** package, use the code below.
 
+```r
 # install.packages("devtools")
 devtools::install_github("Zhaoyu-Andrew/Rpackage")
 library(Rpackage)
+```
 
 ## Use
 
