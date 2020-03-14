@@ -11,7 +11,7 @@ test_that("my_t.test two.sided properly", {
 })
 
 test_that("my_t.test two.sided properly", {
-  expect_is(my_t.test(my_gapminder[[6]], "two.sided", 60), "list")
+  expect_is(my_t.test(my_gapminder[[6]], "two.sided", 10000), "list")
 })
 
 test_that("String input throws error", {
