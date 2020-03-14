@@ -14,17 +14,14 @@ To install the package from Github, using the following code
 devtools::install_github("Zhaoyu-Andrew/Rpackage")
 ```
 load the data for performing the function in the R package 
-```{r, eval = FALSE}
+```{r, message = FALSE}
 library(Rpackage)
 library(ggplot2)
 library(tidyverse)
-```
-If you are unfamiliar with my_gapminder, we can view a description of the data using:
-```{r, eval = FALSE}
-head(my_gapminder)
+data(my_gapminder)
 ```
 # Fitting a t-test
-```{r, eval = FALSE}
+```{r}
 # First, let's subset our samples to only include lifeExp covariate
 life_Exp <- my_gapminder[[4]]
 
@@ -46,22 +43,22 @@ right_sided_p <- my_t.test(life_Exp, "greater", 60)$p_value
 ## Interpreting the result of the t-test
 
 ### Test 1: 
-  for the two-sided test, since the p-value two_sided_p is greater than the cut-off value of α =0.05,
-  we conclude that we fail to reject the null hypothesis, therefore, there is not sufficient evidence to
+  for the two-sided test, since the p-value **`r two_sided_p`** is greater than the cut-off value of α =0.05,
+  we conclude that we **fail to reject** the null hypothesis, therefore, there is not sufficient evidence to
   support a conclusion that the population mean differs from a life expectancy of 60 years. 
   
 ### Test 2:
-  for the left-sided test, since the p-value 0.04661438 is less than the cut-off value of α =0.05,
-  we reject the null hypothesis, therefore, there is enough evidence to support a conclusion that the 
+  for the left-sided test, since the p-value **`left_sided_p`** is less than the cut-off value of α =0.05,
+  we **reject the null hypothesis**, therefore, there is enough evidence to support a conclusion that the 
   population mean is less than a life expectancy of 60 years. 
   
 ### Test 3:
-  for the right-sided test, since the p-value 0.9533856 is greater than the cut-off value of α =0.05,
-  we conclude that we fail to reject the null hypothesis, therefore, there is not sufficient evidence to
+  for the right-sided test, since the p-value **`right_sided_p`** is greater than the cut-off value of α =0.05,
+  we conclude that we **fail to reject** the null hypothesis, therefore, there is not sufficient evidence to
   support a conclusion that the population mean is greater than a life expectancy of 60 years. 
   
 # Fitting my_lm
-```{r, eval = FALSE}
+```{r}
 # extract the gdp_Percap column in my_gapminder 
 gdp_Percap <- my_gapminder[[6]]
 # extract the continent column in my_gapminder 
@@ -71,6 +68,7 @@ life_Exp <- my_gapminder[[4]]
 # model with my_lm in the package 
 test <- my_lm(life_Exp ~ gdp_Percap + continent, data = my_gapminder)
 summary(test)
+
 # select the row representing the intercept of the model
 my_coef <- test[, 1]
 my_matrix <- model.matrix(life_Exp ~ gdp_Percap + continent, 
@@ -88,14 +86,14 @@ ggplot(my_data, aes(x = Actual, y = Fitted, color = Continent)) +
 ```
 ## Interpretation for the results of gdpPercap hypothesis test:
 
-  Based on the summary, we notice that the p-value for all factors appears to be 0.001889, which is smaller than the p-value cut-off value of 0.05, therefore, we reject the null hypothesis and conclude that slope of the linear regression line differs from 0. 
+  Based on the summary, we notice that the p-value for all factors appears to be **0.001889**, which is smaller than the p-value cut-off value of 0.05, therefore, we **reject the null hypothesis** and conclude that slope of the linear regression line differs from 0. 
 
 ## Interpret for the Actual vs. Fitted plot:
   
   On the dot plot, there is a red line which represents the line y = x. Dots which are closer to the red line inform that the predicted value is very closed or equal to the fitted value. By looking at the graph, we can notice that the blue and purple dots tend to concerntrate more beside the red line than other 3 colors.In other words, if we choose to demonstrate a regression using lifeExp as your response variable and gdpPercap and continent as explanatory variables, the prediction model works better for predicting life expectancy in Europe and Oceania than Americas, Asia, and Africa. We can also see from the graph that life expectancy in Africa tends to be lower than other continents, and Europe tends to have the highest life expectancy.
 
 # Fitting my_knn_cv test
-```{r, eval = FALSE}
+```{r}
 # create an empty matrix to record the training misclassification rate and the CV misclassification rate
 result <- matrix(NA, nrow = 2, ncol = 10)
 # iterate from k_nn=1,…,10 and store the training misclassification rate and the CV misclassification rate
@@ -115,7 +113,8 @@ a <- result[1,] - result[2,]
 result
 ```
 ## How does cross validation work?
-  My_knn_cv has 4 parameters. The first one refers to the training data frame; The second one refers to the true value corresponding to the training data set. The third refer to the number of neightbors the method uses to identify the data. The last parameter refers to the k-fold number that refers to the number of groups that a given data sample is to be split into.
+  My_knn_cv has 4 parameters. The first one refers to **the training data frame**; The second one refers to the **true value** corresponding to the training data set. The third refer to **the number of neightbors** the method uses to identify the data. The last parameter refers to the **k-fold number** that refers to the number of groups that a given data sample is to be split into.
+  
   The generall process of k-fold cross validation shuffles the dataset randomly, and then it assigns random number to split the dataset into k-fold. Each time, the method takes all the data with the an identical assigned number out and uses them as testing data, and use the rest as the training data set. Then the method uses the training data to fit a model and evaluate the model with the training data set. The function records 
 the false rate for each iteration and finally summarize the rate by get the mean of all the evaluation scores.
 During the iteration process, the method guarantees that all the nunbers in the original dataset get the chance to be used as both training and testing data
@@ -127,7 +126,7 @@ During the iteration process, the method guarantees that all the nunbers in the 
   Based on the printed matrix, we know that when knn = 10, we get the the smallest CV misclassification rates, so we would use the prediction model with knn = 10 when we just look solely on the CV error.On the other hand, if we can notice that we get the smallest training error when knn = 1, therefore, we will select prediction model with knn = 1 when we just look solely on the training error. A prediction with good fit should have low CV error which is slightly higher the training error, so by calculating the differences between the CV errors and training errors, we can find out that when knn = 10, we have the smallest differences, so I will pick model with knn = 10 in practice.
   
 # Fitting my_rf_cv test
-```{r, eval = FALSE}
+```{r}
 # create a matrix with 90 rows and 1 column 
 cv_err_matrix <- matrix(NA, 90, 1)
 # apply function my_rf_cv with k = 2, 5, 10 and store results into the matrix 
@@ -180,4 +179,4 @@ boxplot <- ggplot(data = cv_err_data_frame,
 boxplot
 ```
 ## summary from the table and the boxplot
-  From the table, we can notice that as the value of k increases, the average CV estimate also increases, at the meantime, the standard deviation decreases. From the boxplot, we can see that the median increases as the value of k increases, we can also notice that when k = 2, there are 3 outliers affecting the standard deviation, that's why the model with k = 2 has bigger spread for the errors and highest standard deviation for CV estimate among the 3 models. In general, the bigger value for k will split the data into more groups, and the function will perform more iterations for the data, therefore the bias tend to be reduced more.
+  From the table, we can notice that as the value of k increases, the average CV estimate also increases, at the meantime, the standard deviation decreases. From the boxplot, we can see that the median increases as the value of k increases, we can also notice that when k = 2, the model has the biggest data spread, that's why the model with k = 2 has the highest standard deviation for CV estimate among the 3 models. In general, the bigger value for k will split the data into more groups, and the function will perform more iterations for the data, therefore the bias tend to be reduced more.
