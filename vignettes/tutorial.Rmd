@@ -58,7 +58,7 @@ right_sided_p <- my_t.test(life_Exp, "greater", 60)$p_value
   support a conclusion that the population mean is greater than a life expectancy of 60 years. 
   
 # Fitting my_lm
-```{r}
+```{r fig1, fig.height = 4, fig.width = 6}
 # extract the gdp_Percap column in my_gapminder 
 gdp_Percap <- my_gapminder[[6]]
 # extract the continent column in my_gapminder 
@@ -86,7 +86,7 @@ plot_lm <- ggplot(my_data, aes(x = Actual, y = Fitted, color = Continent)) +
   labs(title = "Fitted life Expectancy VS Actual life Expectancy") + 
   theme(plot.title = element_text(hjust = 0.5,
                                   face = "bold",
-                                  size = 7)) +
+                                  size = 12)) +
   geom_abline(slope = 1, intercept = 0, col = "red", lty = 2) 
 plot_lm
 ```
@@ -133,7 +133,7 @@ During the iteration process, the method guarantees that all the nunbers in the 
   Based on the printed matrix, we know that when knn = 10, we get the the smallest CV misclassification rates, so we would use the prediction model with knn = 10 when we just look solely on the CV error.On the other hand, if we can notice that we get the smallest training error when knn = 1, therefore, we will select prediction model with knn = 1 when we just look solely on the training error. A prediction with good fit should have low CV error which is slightly higher the training error, so by calculating the differences between the CV errors and training errors, we can find out that when knn = 10, we have the smallest differences, so I will pick model with knn = 10 in practice.
   
 # Fitting my_rf_cv test
-```{r}
+```{r fig2, fig.height = 4, fig.width = 6}
 # create a matrix with 90 rows and 1 column 
 cv_err_matrix <- matrix(NA, 90, 1)
 # apply function my_rf_cv with k = 2, 5, 10 and store results into the matrix 
@@ -179,7 +179,7 @@ boxplot <- ggplot(data = cv_err_data_frame,
   labs(title = "Cross validation error VS k value") +
   theme(plot.title = element_text(hjust = 0.5,
                                   face = "bold",
-                                  size = 8)) + 
+                                  size = 12)) + 
   theme(plot.title = element_text(hjust = 0.5)) +
   ylim(c(70, 85)) +
   xlab("k fold value") +
