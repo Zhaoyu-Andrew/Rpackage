@@ -82,9 +82,15 @@ my_data <- data.frame("Actual" = my_gapminder$lifeExp,
 # plot the dot graph 
 plot_lm <- ggplot(my_data, aes(x = Actual, y = Fitted, color = Continent)) +
   geom_point() +
+  theme_bw(base_size = 12) +
+  labs(title = "Fitted life Expectancy VS Actual life Expectancy") + 
+  theme(plot.title = element_text(hjust = 0.5,
+                                  face = "bold",
+                                  size = 7)) +
   geom_abline(slope = 1, intercept = 0, col = "red", lty = 2) 
 plot_lm
 ```
+
 ## Interpretation for the results of gdpPercap hypothesis test:
 
   Based on the summary, we notice that the p-value for all factors appears to be **0.001889**, which is smaller than the p-value cut-off value of 0.05, therefore, we **reject the null hypothesis** and conclude that slope of the linear regression line differs from 0. 
@@ -169,15 +175,18 @@ cv_err_data_frame <- data.frame(cv_err = cv_err_matrix[, 1],
 boxplot <- ggplot(data = cv_err_data_frame, 
        aes(x = reorder(k_value, cv_err, FUN = median), y = cv_err)) +
   geom_boxplot(fill = "lightblue") +
-  theme_bw(base_size = 20) +
-  labs(title = "lifeExp by k value", 
-       x = "", 
-       y = "") +
-  theme(plot.title =
-          element_text(hjust = 0.5)) +
-  ylim(c(70, 85))
+  theme_bw(base_size = 12) +
+  labs(title = "Cross validation error VS k value") +
+  theme(plot.title = element_text(hjust = 0.5,
+                                  face = "bold",
+                                  size = 8)) + 
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ylim(c(70, 85)) +
+  xlab("k fold value") +
+  ylab("Cross Validation Error")
 
 boxplot
 ```
+
 ## summary from the table and the boxplot
   From the table, we can notice that as the value of k increases, the average CV estimate also increases, at the meantime, the standard deviation decreases. From the boxplot, we can see that the median increases as the value of k increases, we can also notice that when k = 2, the model has the biggest data spread, that's why the model with k = 2 has the highest standard deviation for CV estimate among the 3 models. In general, the bigger value for k will split the data into more groups, and the function will perform more iterations for the data, therefore the bias tend to be reduced more.
